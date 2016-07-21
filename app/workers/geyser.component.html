@@ -1,0 +1,84 @@
+<ion-header>
+  <ion-navbar primary>
+    <ion-buttons start>
+      <button royal (click)="menu.open()">
+        <ion-icon name="menu"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-title>Jerry Geyser</ion-title>
+    <ion-buttons end>
+      <button royal>Save Config</button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+
+<ion-list no-lines>
+  <ion-list-header>Status</ion-list-header>
+
+  <ion-item>
+    Temperature
+    <ion-icon name='thermometer' item-left></ion-icon>
+    <ion-note item-right>{{ state.temperature }}&deg;C</ion-note>
+  </ion-item>
+
+  <ion-item>
+    Status
+    <ion-icon name='information-circle' item-left [style.color]="state.element_on ? 'orange' : 'green'"></ion-icon>
+    <ion-note item-right>{{ state.label }}({{ state.element_on ? 'ON' : 'OFF' }})</ion-note>
+  </ion-item>
+
+</ion-list>
+
+<ion-list no-lines>
+
+  <ion-list-header>Config<button item-right clear>Edit</button></ion-list-header>
+
+  <button ion-item>
+    Ideal Temp
+    <ion-note item-right>{{ config.ideal_temp }}&deg;C</ion-note>
+  </button>
+
+  <ion-item>
+    <ion-label>Override</ion-label>
+    <ion-toggle [(ngModel)]="config.show_override_controls"></ion-toggle>
+  </ion-item>
+
+</ion-list>
+
+<ion-list no-lines inset *ngIf="config.show_override_controls">
+
+  <ion-item>
+    <ion-label>Force On</ion-label>
+    <ion-toggle [(ngModel)]="config.override_option"></ion-toggle>
+  </ion-item>
+
+  <ion-item>
+    <ion-label>Duration</ion-label>
+    <ion-datetime displayFormat="HH:mm" [(ngModel)]="config.override_duration"></ion-datetime>
+  </ion-item>
+
+</ion-list>
+
+<ion-list no-lines>
+
+  <ion-list-header>Schedule</ion-list-header>
+  <button ion-item *ngFor="let row of schedule" (click)="goEditSchedule()">
+
+
+      <ion-label>
+        Weekdays at {{ row.time_of_day }} for {{ row.duration.humanize() }}
+      </ion-label>
+
+      <button item-right clear>Clear</button>
+      <button item-right clear>Edit</button>
+      <button item-right clear>Set</button>
+
+  </button>
+
+
+</ion-list>
+
+
+</ion-content>

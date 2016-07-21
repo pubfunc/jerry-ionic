@@ -1,0 +1,41 @@
+
+<ion-header>
+  <ion-navbar primary>
+    <ion-buttons start>
+      <button royal (click)="menu.open()">
+        <ion-icon name="menu"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-title>Login</ion-title>
+    <ion-buttons end>
+      <button royal>
+        <ion-icon name="person-add"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+
+  <form>
+    <ion-list>
+      <ion-item>
+        <ion-icon [name]="isAuthUser ? 'lock' : 'unlock'" item-left></ion-icon>
+        Login
+        <ion-note item-right>
+        <span>{{ isAuthUser ? 'Logged In' : 'Logged Out' }}</span>
+        </ion-note>
+      </ion-item>
+      <ion-item>
+        <ion-label fixed>Email</ion-label>
+        <ion-input type="text" [(ngModel)]="credentials.username"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label fixed>Password</ion-label>
+        <ion-input type="password" [(ngModel)]="credentials.password"></ion-input>
+      </ion-item>
+    </ion-list>
+    <button full (click)="login()">Login</button>
+  </form>
+</ion-content>

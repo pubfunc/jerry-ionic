@@ -1,0 +1,28 @@
+// http://ionicframework.com/docs/v2/theming/
+
+
+// App Shared Imports
+// --------------------------------------------------
+// These are the imports which make up the design of this app.
+// By default each design mode includes these shared imports.
+// App Shared Sass variables belong in app.variables.scss.
+
+
+
+
+.login-component {
+
+  form {
+    max-width: 400px;
+    margin: 0 auto;
+  }
+}
+
+.field-site-detail-component {
+  .site-detail-header {
+
+  }
+  .site-detail-samples {
+
+  }
+}
