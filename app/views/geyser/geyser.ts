@@ -38,8 +38,16 @@ export class GeyserSchedule {
 
 export class GeyserScheduleItem {
     constructor(
-      public weekdays: Array<string> = [],
-      public tod = moment(),
+      public weekdays = {
+        mon: false,
+        tue: false,
+        wed: false,
+        thu: false,
+        fri: false,
+        sat: false,
+        sun: false
+      },
+      public tod = moment().toISOString(),
       public duration: number = 0
     ){}
     clone(){
@@ -64,7 +72,6 @@ export class Geyser {
 
   public config = new GeyserConfig;
   public schedule = new GeyserSchedule;
-
 
   constructor(private particle: ParticleService){
     this.particle.getEventStream().then(
@@ -140,11 +147,11 @@ export class Geyser {
 
       var tod = new Date(Number(cols[1]) * 1000);
 
-      this.schedule.items.push({
-        weekdays: Number(cols[0]).toString(2),
-        time_of_day: tod.toISOString().substr(11,5),
-        duration: moment.duration(Number(cols[2]), 'seconds')
-      });
+      this.schedule.items.push(new GeyserScheduleItem(
+        this.parseWeekdays(Number(cols[0])),
+        tod.toISOString().substr(11,5),
+        Number(cols[2])
+      ));
 
       i++;
 
@@ -152,6 +159,37 @@ export class Geyser {
 
     console.log("Schedule parsed", this.schedule);
 
+  }
+
+  private parseWeekdays(weekdaysBits: number){
+
+    let weekdays : any = {};
+
+    // weekdays.mon = weekdaysBits >= 128;
+    // weekdaysBits = weekdaysBits % 128; 
+    
+    weekdays.mon = weekdaysBits >= 64;
+    weekdaysBits = weekdaysBits % 64; 
+    
+    weekdays.tue = weekdaysBits >= 32;
+    weekdaysBits = weekdaysBits % 32;
+
+    weekdays.wed = weekdaysBits >= 16;
+    weekdaysBits = weekdaysBits % 16;
+
+    weekdays.thu = weekdaysBits >= 8;
+    weekdaysBits = weekdaysBits % 8;
+
+    weekdays.fri = weekdaysBits >= 4;
+    weekdaysBits = weekdaysBits % 4; 
+
+    weekdays.sat = weekdaysBits >= 2;
+    weekdaysBits = weekdaysBits % 2; 
+
+    weekdays.sun = weekdaysBits >= 1;
+    weekdaysBits = weekdaysBits % 1; 
+
+    return weekdays;
   }
 
   private updateVariables(){

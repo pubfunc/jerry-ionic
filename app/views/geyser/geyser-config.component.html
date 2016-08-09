@@ -14,38 +14,27 @@
 
 <ion-content>
 
-  <ion-list>
-    <ion-item>
-      <ion-label>Repeat</ion-label>
-      <ion-select [(ngModel)]="schedule.weekdays">
-        <ion-option value="1111100">Weekdays</ion-option>
-        <ion-option value="11">Weekend</ion-option>
-        <ion-option value="10000000">Every Day</ion-option>
-      </ion-select>
-    </ion-item>
-
-    <ion-item>
-      <ion-label>Time</ion-label>
-      <ion-datetime displayFormat="HH:mm" [(ngModel)]="schedule.time_of_day"></ion-datetime>
-    </ion-item>
-
-    <ion-item>
-      <ion-label>Duration</ion-label>
-      <ion-datetime displayFormat="HH:mm" [(ngModel)]="schedule.duration"></ion-datetime>
-    </ion-item>
-
-  </ion-list>
-
-
 <ion-list no-lines>
 
-  <ion-list-header>Schedule</ion-list-header>
-  <button ion-item *ngFor="let row of schedule.items" (click)="goEditSchedule()">
+  <ion-list-header>
+    Schedule
+    <button item-right (click)="addScheduleItem()">
+      <ion-icon name="add"></ion-icon>
+    </button>
+  </ion-list-header>
+</ion-list>
 
+  <button ion-item *ngFor="let item of schedule.items">
 
-      <ion-label>
-        Weekdays at {{ row.time_of_day }} for {{ row.duration.humanize() }}
-      </ion-label>
+      <button item-left [style.backgroundColor]="item.weekdays.mon ? 'black' : 'grey'" (click)="item.weekdays.mon = !item.weekdays.mon">M</button>
+      <button item-left [style.backgroundColor]="item.weekdays.tue ? 'black' : 'grey'" (click)="item.weekdays.tue = !item.weekdays.tue">T</button>
+      <button item-left [style.backgroundColor]="item.weekdays.wed ? 'black' : 'grey'" (click)="item.weekdays.wed = !item.weekdays.wed">W</button>
+      <button item-left [style.backgroundColor]="item.weekdays.thu ? 'black' : 'grey'" (click)="item.weekdays.thu = !item.weekdays.thu">T</button>
+      <button item-left [style.backgroundColor]="item.weekdays.fri ? 'black' : 'grey'" (click)="item.weekdays.fri = !item.weekdays.fri">F</button>
+      <button item-left [style.backgroundColor]="item.weekdays.sat ? 'black' : 'grey'" (click)="item.weekdays.sat = !item.weekdays.sat">S</button>
+      <button item-left [style.backgroundColor]="item.weekdays.sun ? 'black' : 'grey'" (click)="item.weekdays.sun = !item.weekdays.sun">S</button>
+
+      <button (click)="setTime()">Time</button>
 
       <button item-right clear>Clear</button>
       <button item-right clear>Edit</button>
@@ -54,7 +43,28 @@
   </button>
 
 
-</ion-list>
+<ion-grid>
+  <ion-row *ngFor="let item of schedule.items">
+    <ion-col width-33>
+      <button item-left [style.backgroundColor]="item.weekdays.mon ? 'black' : 'grey'" (click)="item.weekdays.mon = !item.weekdays.mon">M</button>
+      <button item-left [style.backgroundColor]="item.weekdays.tue ? 'black' : 'grey'" (click)="item.weekdays.tue = !item.weekdays.tue">T</button>
+      <button item-left [style.backgroundColor]="item.weekdays.wed ? 'black' : 'grey'" (click)="item.weekdays.wed = !item.weekdays.wed">W</button>
+      <button item-left [style.backgroundColor]="item.weekdays.thu ? 'black' : 'grey'" (click)="item.weekdays.thu = !item.weekdays.thu">T</button>
+      <button item-left [style.backgroundColor]="item.weekdays.fri ? 'black' : 'grey'" (click)="item.weekdays.fri = !item.weekdays.fri">F</button>
+      <button item-left [style.backgroundColor]="item.weekdays.sat ? 'black' : 'grey'" (click)="item.weekdays.sat = !item.weekdays.sat">S</button>
+      <button item-left [style.backgroundColor]="item.weekdays.sun ? 'black' : 'grey'" (click)="item.weekdays.sun = !item.weekdays.sun">S</button>
+    </ion-col>
+
+    <ion-col width-33>
+        <ion-datetime item-right displayFormat="h:mm A" pickerFormat="h mm A"></ion-datetime>
+    </ion-col>
+
+    <ion-col width-33>
+        <ion-datetime item-right displayFormat="h:mm A" pickerFormat="h mm A"></ion-datetime>      
+    </ion-col>
+  </ion-row>
+</ion-grid>
+
 
 <ion-list no-lines>
 
@@ -72,19 +82,19 @@
 
 </ion-list>
 
-<ion-list-header>Schedule</ion-list-header>
+
 
 <ion-list no-lines inset>
 
-<ion-item>
-  <ion-label>Force On</ion-label>
-  <ion-toggle [(ngModel)]="config.override_option"></ion-toggle>
-</ion-item>
+  <ion-item>
+    <ion-label>Force On</ion-label>
+    <ion-toggle [(ngModel)]="config.override_option"></ion-toggle>
+  </ion-item>
 
-<ion-item>
-  <ion-label>Duration</ion-label>
-  <ion-datetime displayFormat="HH:mm" [(ngModel)]="config.override_duration"></ion-datetime>
-</ion-item>
+  <ion-item>
+    <ion-label>Duration</ion-label>
+    <ion-datetime displayFormat="HH:mm" [(ngModel)]="config.override_duration"></ion-datetime>
+  </ion-item>
 
 </ion-list>
 

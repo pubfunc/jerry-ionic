@@ -1,6 +1,6 @@
-import { Geyser, GeyserConfig, GeyserSchedule } from './geyser';
+import { Geyser, GeyserConfig, GeyserSchedule, GeyserScheduleItem } from './geyser';
 import { Component } from '@angular/core';
-import { Modal, NavController, ViewController, NavParams } from 'ionic-angular';
+import { Modal, NavController, ViewController, NavParams, PickerController } from 'ionic-angular';
 
 
 @Component({
@@ -14,16 +14,38 @@ export class GeyserConfigComponent {
   constructor(
     private view: ViewController, 
     private params: NavParams, 
-    private geyser: Geyser
+    private geyser: Geyser,
+    private picker: PickerController
     ){
 
       this.config = this.geyser.config.clone();
       this.schedule = this.geyser.schedule.clone();
-
   }
 
   dismiss(){
     this.view.dismiss();
   }
 
+  addScheduleItem(){
+    this.schedule.items.push(new GeyserScheduleItem);
+  }
+
+  setTime(){
+    this.picker
+        .create({})
+        .present()
+        .then(
+          res => {
+            console.log(res);
+          },
+          rej => {
+            console.log(rej);
+          }
+        );
+  }
+
+
+
 }
+
+

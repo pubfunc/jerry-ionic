@@ -24,8 +24,6 @@ export class GeyserComponent implements OnInit {
 
   ngOnInit() {
 
-
-
   }
 
 
