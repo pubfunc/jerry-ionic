@@ -8,12 +8,13 @@ export class ParticleService {
   private devices: any[];
   private particle: any;
   private token: string;
-  private deviceId = '2e0043001047353138383138';
+  private deviceId: string = null;
 
   constructor() {
       this.particle = new Particle();
       this.devices = [];
       this.loadToken();
+      this.loadDefaultDevice();
   }
 
   hasToken(){
@@ -39,31 +40,17 @@ export class ParticleService {
   }
 
   getEventStream(){
-    console.debug('Particle getEventStream');
 
     var promise = this.particle.getEventStream({
       auth: this.token,
       deviceId: this.deviceId,
     });
 
-    promise.then(
-      stream => {
-        console.log('Particle getEventStream success', stream);
-        stream.on('event', data => {
-
-          console.log('Particle event', data);
-        });
-      },
-      err => {
-        console.error('Particle getEventStream err', err);
-      }
-    );
     return promise;
   }
 
 
   getVariable(name: string){
-    console.debug('Particle getVar');
 
     var promise = this.particle.getVariable({
       auth: this.token,
@@ -71,20 +58,11 @@ export class ParticleService {
       name: name
     });
 
-    promise.then(
-      value => {
-        console.info('Particle getVar success', name, value);
-      },
-      err => {
-        console.error('Particle getVar err', err);
-      }
-    );
     return promise;
 
   }
 
   callFunction(deviceId:string, name:string, argument:string){
-    console.debug('Particle callFunction', deviceId, name, argument);
 
     var promise = this.particle.callFunction({
       deviceId: deviceId,
@@ -93,42 +71,57 @@ export class ParticleService {
       auth: this.token
     });
 
-    promise.then(
-      data => {
-        console.log('Particle call success', data);
-      },
-      err => {
-        console.error('Particle call err', err);
-      }
-    );
+
     return promise;
   }
 
   listDevices(){
-    var promise = this.particle
-        .listDevices({ auth: this.token });
+    return new Promise<Array<any>>(
+      (resolve, reject) => {
+        this.particle.listDevices({ auth: this.token })
+          .then(
+            res => {
+              console.info('List Devices success ', res);
+              this.devices = res.body;
+              resolve(this.devices);
+            },
+            err => {
+              console.error('List devices call failed: ', err);
+              reject();
+            }
+          );
+      }
+    );
 
-    promise.then(
-          devices => {
-            console.info('List Devices success ', devices);
-            this.devices = devices.body;
-          },
-          err => {
-            console.error('List devices call failed: ', err);
-          }
-        );
+  }
 
-    return promise;
+  setDefaultDevice(deviceId: string){
+    this.deviceId = deviceId;
+    this.storeDefaultDevice();
+  }
+
+  getDefaultDevice(){
+    return this.deviceId;    
+  }
+
+  private loadDefaultDevice(){
+    return this.deviceId = localStorage.getItem('particle-device');    
+  }
+
+  private storeDefaultDevice(){
+    localStorage.setItem('particle-device', this.deviceId);    
   }
 
 
-  loadToken(){
+  private loadToken(){
     return this.token = localStorage.getItem('particle-token');
   }
 
-  storeToken(){
+  private storeToken(){
     localStorage.setItem('particle-token', this.token);
   }
+
+
 
 
 }

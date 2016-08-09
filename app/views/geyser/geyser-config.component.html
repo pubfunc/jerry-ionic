@@ -1,0 +1,91 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>
+      Jerry Geyser - Config
+    </ion-title>
+    <ion-buttons start>
+      <button (click)="dismiss()">
+        <ion-icon name="close"></ion-icon>
+      </button>
+      <button>Save</button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-list>
+    <ion-item>
+      <ion-label>Repeat</ion-label>
+      <ion-select [(ngModel)]="schedule.weekdays">
+        <ion-option value="1111100">Weekdays</ion-option>
+        <ion-option value="11">Weekend</ion-option>
+        <ion-option value="10000000">Every Day</ion-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>Time</ion-label>
+      <ion-datetime displayFormat="HH:mm" [(ngModel)]="schedule.time_of_day"></ion-datetime>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>Duration</ion-label>
+      <ion-datetime displayFormat="HH:mm" [(ngModel)]="schedule.duration"></ion-datetime>
+    </ion-item>
+
+  </ion-list>
+
+
+<ion-list no-lines>
+
+  <ion-list-header>Schedule</ion-list-header>
+  <button ion-item *ngFor="let row of schedule.items" (click)="goEditSchedule()">
+
+
+      <ion-label>
+        Weekdays at {{ row.time_of_day }} for {{ row.duration.humanize() }}
+      </ion-label>
+
+      <button item-right clear>Clear</button>
+      <button item-right clear>Edit</button>
+      <button item-right clear>Set</button>
+
+  </button>
+
+
+</ion-list>
+
+<ion-list no-lines>
+
+  <ion-list-header>Config<button item-right clear>Edit</button></ion-list-header>
+
+  <button ion-item>
+    Ideal Temp
+    <ion-note item-right></ion-note>
+  </button>
+
+  <ion-item>
+    <ion-label>Override</ion-label>
+    <ion-toggle [(ngModel)]="config.show_override_controls"></ion-toggle>
+  </ion-item>
+
+</ion-list>
+
+<ion-list-header>Schedule</ion-list-header>
+
+<ion-list no-lines inset>
+
+<ion-item>
+  <ion-label>Force On</ion-label>
+  <ion-toggle [(ngModel)]="config.override_option"></ion-toggle>
+</ion-item>
+
+<ion-item>
+  <ion-label>Duration</ion-label>
+  <ion-datetime displayFormat="HH:mm" [(ngModel)]="config.override_duration"></ion-datetime>
+</ion-item>
+
+</ion-list>
+
+</ion-content>

@@ -1,0 +1,58 @@
+
+<ion-header>
+  <ion-navbar primary>
+    <ion-buttons start>
+      <button royal (click)="menu.open()">
+        <ion-icon name="menu"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-title>Jerry</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+
+  <form>
+    <ion-list>
+      <button ion-item (click)="openGeyser()">
+        Geyser
+        <ion-icon item-left name="thermometer"></ion-icon>
+        <ion-icon item-right name="arrow-forward"></ion-icon>
+      </button>
+      <ion-item>
+        <ion-icon [name]="isAuthUser ? 'lock' : 'unlock'" item-left></ion-icon>
+        Login
+        <ion-note item-right>
+        <span>{{ isAuthUser ? 'Logged In' : 'Logged Out' }}</span>
+        </ion-note>
+      </ion-item>
+      <ion-item *ngIf="!isAuthUser">
+        <ion-label fixed>Email</ion-label>
+        <ion-input name="username" type="text" [(ngModel)]="credentials.username"></ion-input>
+      </ion-item>
+
+      <ion-item *ngIf="!isAuthUser">
+        <ion-label fixed>Password</ion-label>
+        <ion-input name="password" type="password" [(ngModel)]="credentials.password"></ion-input>
+      </ion-item>
+
+      <button ion-item *ngIf="!isAuthUser" (click)="login()" >
+        Login
+      </button>
+
+      <ion-item>
+        Devices
+        <button clear item-right (click)="refreshDeviceList()">Refresh</button>
+      </ion-item>
+
+      <ion-item *ngFor="let device of devices">
+        {{ device.id }}
+        <button item-right (click)="setDefault(device)" [hidden]="device.id == defaultDevice">DEF</button>
+        <ion-icon item-right name="checkmark" [hidden]="device.id != defaultDevice"></ion-icon>
+      </ion-item>
+
+
+
+    </ion-list>
+  </form>
+</ion-content>

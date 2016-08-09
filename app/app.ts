@@ -1,28 +1,35 @@
+import { ModalController } from 'ionic-angular';
 import { Component, OnInit } from '@angular/core';
 import { Platform, ionicBootstrap, NavController, MenuController } from 'ionic-angular';
 import { StatusBar } from 'ionic-native';
 
-import { LoginComponent } from './views/auth/login.component';
+import { DashboardComponent } from './views/dashboard/dashboard.component';
 import { GeyserComponent } from './views/geyser/geyser.component';
+import { Geyser } from './views/geyser/geyser';
+import { ParticleService } from './particle/particle.service';
 
 @Component({
     templateUrl: 'build/app.html',
+    providers: [ ModalController ]
 })
-export class MyApp implements OnInit{
+export class JerryApp implements OnInit{
 
   private rootPage:any;
 
   public authUser:any;
   public isAuthUser:boolean;
 
-  constructor(private platform:Platform, private menu: MenuController/*, private nav: NavController*/) {
+  constructor(
+    private platform:Platform,
+    private modal: ModalController
+    ) {
 
     platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
       //StatusBar.styleDefault();
       console.info('Platform Ready', platform);
-      this.rootPage = GeyserComponent;
+      this.rootPage = DashboardComponent;
     });
   }
 
@@ -30,17 +37,7 @@ export class MyApp implements OnInit{
 
   }
 
-  openGeyserModule(){
-    this.rootPage = GeyserComponent;
-    this.menu.close();
-  }
-
-  openAuthModule(){
-    this.rootPage = LoginComponent;
-    this.menu.close();
-  }
-
 
 }
 
-ionicBootstrap(MyApp, []);
+ionicBootstrap(JerryApp, [Geyser, ParticleService]);
