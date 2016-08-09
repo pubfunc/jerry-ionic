@@ -62,10 +62,10 @@ export class ParticleService {
 
   }
 
-  callFunction(deviceId:string, name:string, argument:string){
+  callFunction(name:string, argument:string){
 
     var promise = this.particle.callFunction({
-      deviceId: deviceId,
+      deviceId: this.deviceId,
       name: name,
       argument: argument,
       auth: this.token

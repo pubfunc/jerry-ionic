@@ -1,0 +1,45 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>
+      Jerry Geyser - Schedule
+    </ion-title>
+    <ion-buttons start>
+      <button (click)="dismiss()">
+        <ion-icon name="close"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+<ion-list no-lines>
+
+  <ion-item>
+
+      
+      <ion-label>Weekdays</ion-label>
+
+      <button item-right [style.backgroundColor]="item.weekdays.mon ? 'black' : 'lightgrey'" (click)="item.weekdays.mon = !item.weekdays.mon">M</button>
+      <button item-right [style.backgroundColor]="item.weekdays.tue ? 'black' : 'lightgrey'" (click)="item.weekdays.tue = !item.weekdays.tue">T</button>
+      <button item-right [style.backgroundColor]="item.weekdays.wed ? 'black' : 'lightgrey'" (click)="item.weekdays.wed = !item.weekdays.wed">W</button>
+      <button item-right [style.backgroundColor]="item.weekdays.thu ? 'black' : 'lightgrey'" (click)="item.weekdays.thu = !item.weekdays.thu">T</button>
+      <button item-right [style.backgroundColor]="item.weekdays.fri ? 'black' : 'lightgrey'" (click)="item.weekdays.fri = !item.weekdays.fri">F</button>
+      <button item-right [style.backgroundColor]="item.weekdays.sat ? 'black' : 'lightgrey'" (click)="item.weekdays.sat = !item.weekdays.sat">S</button>
+      <button item-right [style.backgroundColor]="item.weekdays.sun ? 'black' : 'lightgrey'" (click)="item.weekdays.sun = !item.weekdays.sun">S</button>      
+
+  </ion-item>
+
+  <ion-item>
+    <ion-label>Time Of Day</ion-label>
+    <ion-datetime [(ngModel)]="item.tod" displayFormat="HH:mm"></ion-datetime>
+  </ion-item>
+
+  <ion-item>
+    <ion-label>Duration</ion-label>
+    <ion-datetime [(ngModel)]="item.duration" displayFormat="HH:mm"></ion-datetime>
+  </ion-item>
+
+</ion-list>
+
+</ion-content>

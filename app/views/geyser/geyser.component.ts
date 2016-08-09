@@ -3,17 +3,17 @@ import { NavController, MenuController, ModalController } from 'ionic-angular';
 
 import * as moment from 'moment';
 
-import { GeyserConfigComponent } from './geyser-config.component';
+import { GeyserConfigComponent, JoinWeekdays, DurationPipe } from './geyser-config.component';
 
 import { Geyser } from './geyser';
 
 @Component({
   templateUrl: 'build/views/geyser/geyser.component.html',
+  pipes: [JoinWeekdays, DurationPipe]
 })
 export class GeyserComponent implements OnInit {
 
   public lastEventTime = moment(0);
-
 
   constructor(
     private nav: NavController, 
@@ -27,8 +27,8 @@ export class GeyserComponent implements OnInit {
   }
 
 
-  openConfig(){
-    let modal = this.modal.create(GeyserConfigComponent);
+  openConfig(type: string){
+    let modal = this.modal.create(GeyserConfigComponent, {type: type});
     modal.present(modal);
   }
 

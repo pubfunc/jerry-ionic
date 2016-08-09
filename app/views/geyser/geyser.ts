@@ -7,7 +7,7 @@ export class GeyserConfig {
       public ideal_temp = 0,
       public override_option = false,
       public override_duration = 0,
-      public override_start_time = ''
+      public override_start_time = '0000-00-00 00:00'
     ){}
 
     clone(){
@@ -47,8 +47,8 @@ export class GeyserScheduleItem {
         sat: false,
         sun: false
       },
-      public tod = moment().toISOString(),
-      public duration: number = 0
+      public tod = '00:00',
+      public duration = '00:00'
     ){}
     clone(){
       return new GeyserScheduleItem(
@@ -84,6 +84,14 @@ export class Geyser {
     this.updateVariables();
   }
 
+
+  public saveSchedule(schedule: GeyserSchedule){
+    console.log(this.stringifySchedule(schedule), schedule);
+  }
+
+  public saveConfig(config: GeyserConfig){
+
+  }
 
 
   private parseStateEvent(event: any){
@@ -135,6 +143,32 @@ export class Geyser {
 
   }
 
+  private stringifySchedule(schedule: GeyserSchedule){
+
+
+    let rows = [];
+
+    for (var i = 0; i < schedule.items.length; i++) {
+      var item = schedule.items[i];
+      var weekdayBits = 0;
+      var durationSecs = moment.duration(item.duration).asSeconds();
+      var todSecs = moment.duration(item.tod).asSeconds();
+
+      if(item.weekdays.mon) weekdayBits += 64;
+      if(item.weekdays.tue) weekdayBits += 32;
+      if(item.weekdays.wed) weekdayBits += 16;
+      if(item.weekdays.thu) weekdayBits += 8;
+      if(item.weekdays.fri) weekdayBits += 4;
+      if(item.weekdays.sat) weekdayBits += 2;
+      if(item.weekdays.sun) weekdayBits += 1;
+
+      rows.push([weekdayBits, todSecs, durationSecs].join(':'));
+    }
+
+    return rows.join(',');
+
+  }
+
   private parseScheduleString(scheduleString : string){
 
     var scheduleRows = scheduleString.split(',');
@@ -149,8 +183,8 @@ export class Geyser {
 
       this.schedule.items.push(new GeyserScheduleItem(
         this.parseWeekdays(Number(cols[0])),
-        tod.toISOString().substr(11,5),
-        Number(cols[2])
+        moment(Number(cols[1])).format('H:mm'),
+        moment(Number(cols[2])).format('H:mm')
       ));
 
       i++;

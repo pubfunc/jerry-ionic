@@ -6,8 +6,7 @@
 
 <ion-content>
 
-  <ion-list no-lines>
-    <ion-list-header>Status</ion-list-header>
+  <ion-list>
 
     <ion-item>
       Temperature
@@ -21,22 +20,28 @@
       <ion-note item-right>{{ geyser.state.label }}({{ geyser.state.element_on ? 'ON' : 'OFF' }})</ion-note>
     </ion-item>
 
-    <button ion-item (click)="openConfig()">
+    <button ion-item (click)="openConfig('schedule')">
       <h2>Schedule</h2>
-      <p>M T W T F 10pm, S S 9:30pm</p>
+      <p>
+        <span *ngFor="let item of geyser.schedule.items">
+          {{ item.weekdays | joinWeekdays }}
+          at {{ item.tod }}
+          for {{ item.duration | duration }},
+        </span>
+      </p>
       <ion-icon name='clock' item-left></ion-icon>
       <ion-icon name='arrow-forward' item-right></ion-icon>
     </button>
 
 
-    <button ion-item (click)="openConfig()">
+    <button ion-item (click)="openConfig('config')">
       <h2>Config</h2>
       <p>Ideal Temperature: 50&deg;C</p>
       <ion-icon name='build' item-left></ion-icon>
       <ion-icon item-right name="arrow-forward"></ion-icon>
     </button>
 
-    <button ion-item (click)="openConfig()">
+    <button ion-item (click)="openConfig('override')">
       <h2>Override</h2>
       <p [style.color]="geyser.state.element_on ? 'orange' : 'green'">Forced Off, 1day 24h remaining</p>
       <ion-icon name='options' item-left></ion-icon>
