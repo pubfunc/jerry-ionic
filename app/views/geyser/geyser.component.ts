@@ -1,14 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import { NavController, MenuController, Modal } from 'ionic-angular';
+import { NavController, MenuController, ModalController } from 'ionic-angular';
 
 import * as moment from 'moment';
 
-import { ParticleService } from '../particle/particle.service';
+import { ParticleService } from '../../particle/particle.service';
 import { EditScheduleComponent } from './edit-schedule.component';
 
 
 @Component({
-  templateUrl: 'build/workers/geyser.component.html',
+  templateUrl: 'build/views/geyser/geyser.component.html',
   providers: [ ParticleService ]
 })
 export class GeyserComponent implements OnInit {
@@ -32,7 +32,12 @@ export class GeyserComponent implements OnInit {
     show_override_controls: false
   };
 
-  constructor(public menu: MenuController, private nav: NavController, private particle: ParticleService) {
+  constructor(
+    public menu: MenuController, 
+    private nav: NavController, 
+    private modal: ModalController,
+    private particle: ParticleService
+    ) {
 
   }
 
@@ -162,8 +167,8 @@ export class GeyserComponent implements OnInit {
 
 
   goEditSchedule(){
-    let modal = Modal.create(EditScheduleComponent);
-    this.nav.present(modal);
+    let modal = this.modal.create(EditScheduleComponent);
+    modal.present(modal);
   }
 
 

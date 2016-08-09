@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Platform, ionicBootstrap, NavController, MenuController } from 'ionic-angular';
 import { StatusBar } from 'ionic-native';
 
-import { LoginComponent } from './auth/login.component';
-import { GeyserComponent } from './workers/geyser.component';
+import { LoginComponent } from './views/auth/login.component';
+import { GeyserComponent } from './views/geyser/geyser.component';
 
 @Component({
     templateUrl: 'build/app.html',

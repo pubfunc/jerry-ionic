@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Platform, ionicBootstrap, NavController, MenuController } from 'ionic-angular';
-import { ParticleService } from '../particle/particle.service';
+import { ParticleService } from '../../particle/particle.service';
 
 
 @Component({
-  templateUrl: 'build/auth/login.component.html',
+  templateUrl: 'build/views/auth/login.component.html',
   providers: [ ParticleService ]
 })
 export class LoginComponent  implements OnInit{
