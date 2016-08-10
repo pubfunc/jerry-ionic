@@ -28,8 +28,7 @@ export class GeyserComponent implements OnInit {
 
 
   openConfig(type: string){
-    let modal = this.modal.create(GeyserConfigComponent, {type: type});
-    modal.present(modal);
+    this.nav.push(GeyserConfigComponent, {type: type});
   }
 
 

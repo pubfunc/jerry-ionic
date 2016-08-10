@@ -22,6 +22,21 @@ export class GeyserScheduleItemComponent {
       this.index = params.get('index');
   }
 
+  toggleWeekday(key: string){
+    this.item.weekdays[key] = !Boolean(this.item.weekdays[key]);
+
+    console.log('toogle weekday', key, this.item.weekdays[key]);
+  }
+
+  toggleAllWeekday(){
+    for (var weekday in this.item.weekdays) {
+      if (this.item.weekdays.hasOwnProperty(weekday)) {
+        this.item.weekdays[weekday] = true;
+        
+      }
+    }
+  }
+
   dismiss(){
     this.view.dismiss({item: this.item, index: this.index});
   }

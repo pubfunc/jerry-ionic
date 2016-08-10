@@ -34,6 +34,7 @@ var copyFonts = require('ionic-gulp-fonts-copy');
 var copyScripts = require('ionic-gulp-scripts-copy');
 
 var isRelease = argv.indexOf('--release') > -1;
+var isOptimized = argv.indexOf('--optimize') > -1;
 
 gulp.task('watch', ['clean'], function(done){
   runSequence(
@@ -53,7 +54,7 @@ gulp.task('build', ['clean'], function(done){
       buildBrowserify({
         minify: isRelease,
         browserifyOptions: {
-          debug: !isRelease
+          debug: !isRelease && !isOptimized
         },
         uglifyOptions: {
           mangle: false

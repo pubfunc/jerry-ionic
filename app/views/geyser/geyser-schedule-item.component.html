@@ -20,13 +20,14 @@
       
       <ion-label>Weekdays</ion-label>
 
-      <button item-right [style.backgroundColor]="item.weekdays.mon ? 'black' : 'lightgrey'" (click)="item.weekdays.mon = !item.weekdays.mon">M</button>
-      <button item-right [style.backgroundColor]="item.weekdays.tue ? 'black' : 'lightgrey'" (click)="item.weekdays.tue = !item.weekdays.tue">T</button>
-      <button item-right [style.backgroundColor]="item.weekdays.wed ? 'black' : 'lightgrey'" (click)="item.weekdays.wed = !item.weekdays.wed">W</button>
-      <button item-right [style.backgroundColor]="item.weekdays.thu ? 'black' : 'lightgrey'" (click)="item.weekdays.thu = !item.weekdays.thu">T</button>
-      <button item-right [style.backgroundColor]="item.weekdays.fri ? 'black' : 'lightgrey'" (click)="item.weekdays.fri = !item.weekdays.fri">F</button>
-      <button item-right [style.backgroundColor]="item.weekdays.sat ? 'black' : 'lightgrey'" (click)="item.weekdays.sat = !item.weekdays.sat">S</button>
-      <button item-right [style.backgroundColor]="item.weekdays.sun ? 'black' : 'lightgrey'" (click)="item.weekdays.sun = !item.weekdays.sun">S</button>      
+      <button item-right secondary (click)="toggleAllWeekday()">All</button>
+      <button item-right [clear]="item.weekdays.mon ? null : true" (click)="toggleWeekday('mon')">M</button>
+      <button item-right [clear]="item.weekdays.tue ? null : true" (click)="toggleWeekday('tue')">T</button>
+      <button item-right [clear]="item.weekdays.wed ? null : true" (click)="toggleWeekday('wed')">W</button>
+      <button item-right [clear]="item.weekdays.thu ? null : true" (click)="toggleWeekday('thu')">T</button>
+      <button item-right [clear]="item.weekdays.fri ? null : true" (click)="toggleWeekday('fri')">F</button>
+      <button item-right [clear]="item.weekdays.sat ? null : true" (click)="toggleWeekday('sat')">S</button>
+      <button item-right [clear]="item.weekdays.sun ? null : true" (click)="toggleWeekday('sun')">S</button>      
 
   </ion-item>
 

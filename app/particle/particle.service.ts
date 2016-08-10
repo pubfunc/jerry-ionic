@@ -64,15 +64,25 @@ export class ParticleService {
 
   callFunction(name:string, argument:string){
 
-    var promise = this.particle.callFunction({
-      deviceId: this.deviceId,
-      name: name,
-      argument: argument,
-      auth: this.token
-    });
+    return new Promise<any>(
+      (resolve, reject) => {
+        this.particle.callFunction({
+          deviceId: this.deviceId,
+          name: name,
+          argument: argument,
+          auth: this.token
+        }).then(
+          res => {
+            resolve(res);
+          },
+          err => {
+            console.error('call function err', err);
+            reject(err);
+          }
+        );
+      }
+    );
 
-
-    return promise;
   }
 
   listDevices(){

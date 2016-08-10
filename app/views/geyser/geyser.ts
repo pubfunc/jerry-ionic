@@ -57,6 +57,15 @@ export class GeyserScheduleItem {
         this.duration
       );
     }
+    isset(){
+      return this.weekdays.mon ||
+              this.weekdays.tue ||
+              this.weekdays.wed ||
+              this.weekdays.thu ||
+              this.weekdays.fri ||
+              this.weekdays.sat ||
+              this.weekdays.sun;    
+    }
 }
 
 
@@ -86,7 +95,11 @@ export class Geyser {
 
 
   public saveSchedule(schedule: GeyserSchedule){
-    console.log(this.stringifySchedule(schedule), schedule);
+    console.log('save schedule', this.stringifySchedule(schedule), schedule);
+
+    return this.particle
+               .callFunction('setGSchedule', this.stringifySchedule(schedule));
+
   }
 
   public saveConfig(config: GeyserConfig){
@@ -95,8 +108,10 @@ export class Geyser {
 
 
   private parseStateEvent(event: any){
+
+    console.info('geyser state event', event);
+
     var data = JSON.parse(event.data);
-    console.log('geyser state', data);
     this.state.element_on = data.elem;
     this.state.temperature = data.temp;
 
@@ -131,6 +146,9 @@ export class Geyser {
   // {"data":""tmp":55.00,"ov_sta":8000,"ov_dur":500,"ov_opt":120","ttl":"60","published_at":"2016-07-21T19:16:32.374Z","coreid":"2e0043001047353138383138","name":"jerry/geyser/config"}
 
   private parseConfigEvent(event: any){
+
+    console.info('geyser config event', event);
+
     var data = JSON.parse(event.data);
 
     this.config.ideal_temp = data.tmp;
@@ -140,7 +158,7 @@ export class Geyser {
   }
 
   private parseScheduleEvent(event:any){
-
+    console.warn('TODO handle schedule event', event);
   }
 
   private stringifySchedule(schedule: GeyserSchedule){
@@ -165,7 +183,7 @@ export class Geyser {
       rows.push([weekdayBits, todSecs, durationSecs].join(':'));
     }
 
-    return rows.join(',');
+    return rows.join(',') + ',';
 
   }
 
@@ -183,15 +201,15 @@ export class Geyser {
 
       this.schedule.items.push(new GeyserScheduleItem(
         this.parseWeekdays(Number(cols[0])),
-        moment(Number(cols[1])).format('H:mm'),
-        moment(Number(cols[2])).format('H:mm')
+        moment(0).startOf('day').add("seconds", Number(cols[1])).format("HH:mm"),
+        moment(0).startOf('day').add("seconds", Number(cols[2])).format("HH:mm")
       ));
 
       i++;
 
     });
 
-    console.log("Schedule parsed", this.schedule);
+    console.log("Schedule parsed", scheduleString, this.schedule);
 
   }
 

@@ -11,6 +11,7 @@ import { GeyserComponent } from '../geyser/geyser.component';
 export class DashboardComponent  implements OnInit{
 
   public isAuthUser: boolean;
+  public isRefreshing: boolean = false;
 
   public credentials = {
     username: '',
@@ -54,12 +55,16 @@ export class DashboardComponent  implements OnInit{
   }
 
   refreshDeviceList(){
+    this.isRefreshing = true; 
     this.particle.listDevices().then(
       devices => {
+        this.isRefreshing = false; 
         this.devices = devices;
+        this.toastRefreshSuccess();
       },
       err => {
-        console.log('device-list err', err);        
+        console.log('device-list err', err);
+        this.isRefreshing = false;                 
       }
     );
   }
@@ -70,6 +75,13 @@ export class DashboardComponent  implements OnInit{
 
   toastLoginSuccess(){
 
+  }
+
+  toastRefreshSuccess(){
+    this.toast.create({
+      message: "Device list refreshed!",
+      duration: 3000
+    }).present();
   }
 
   toastDefaultSet(){

@@ -4,7 +4,6 @@
       Jerry Geyser - Config
     </ion-title>
     <ion-buttons start>
-      <button (click)="dismiss()">Cancel</button>
       <button (click)="save()">Save</button>
     </ion-buttons>
   </ion-toolbar>
@@ -25,9 +24,17 @@
         </ion-list-header>
 
         <ion-item *ngFor="let item of schedule.items; let i = index">
-            {{ item.weekdays | joinWeekdays }}
-            at {{ item.tod }}
-            for {{ item.duration | duration }}
+
+            <p *ngIf="item.isset()">
+            <b>{{ item.weekdays | joinWeekdays }}</b>
+            at <b>{{ item.tod }}</b>
+            for <b>{{ item.duration | duration }}</b>
+            </p>
+
+            <p *ngIf="!item.isset()">
+              Unset
+            </p>
+            
             <button item-right (click)="editScheduleItem(item, i)">Edit</button>
         </ion-item>
 
@@ -36,8 +43,6 @@
         </ion-item>
       </ion-list>
     </template>
-
-
 
     <template ngSwitchCase="config">
       <ion-list no-lines >

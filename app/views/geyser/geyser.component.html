@@ -24,9 +24,11 @@
       <h2>Schedule</h2>
       <p>
         <span *ngFor="let item of geyser.schedule.items">
+          <span *ngIf="item.isset()">
           {{ item.weekdays | joinWeekdays }}
           at {{ item.tod }}
           for {{ item.duration | duration }},
+          </span>
         </span>
       </p>
       <ion-icon name='clock' item-left></ion-icon>

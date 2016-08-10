@@ -1,6 +1,6 @@
 import { Geyser, GeyserConfig, GeyserSchedule, GeyserScheduleItem } from './geyser';
 import { Component, Pipe, PipeTransform } from '@angular/core';
-import { Modal, NavController, ViewController, NavParams, PickerController, PickerOptions, ModalController } from 'ionic-angular';
+import { Modal, NavController, ViewController, NavParams, PickerController, PickerOptions, ModalController, ToastController } from 'ionic-angular';
 
 import { GeyserScheduleItemComponent } from './geyser-schedule-item.component';
 
@@ -8,17 +8,47 @@ import { GeyserScheduleItemComponent } from './geyser-schedule-item.component';
 @Pipe({name: 'joinWeekdays'})
 export class JoinWeekdays implements PipeTransform {
   transform(map: any, glue: string = ','): string {
-    console.log('pipe weekdays', map);
+    //console.log('pipe weekdays', map);
     let days = [];
-    if(map.mon) days.push('Mon'); 
-    if(map.tue) days.push('Tue'); 
-    if(map.wed) days.push('Wed'); 
-    if(map.thu) days.push('Thu'); 
-    if(map.fri) days.push('Fri');
-    if(map.sat) days.push('Sat'); 
-    if(map.sun) days.push('Sun');
 
-    if(days.length == 0) return 'Not Set';
+    let workday_count = 0;
+    let weekend_count = 0;
+
+    if(map.mon) {
+      days.push('Mon');
+      workday_count++;
+    } 
+    if(map.tue) {
+      days.push('Tue');
+      workday_count++;
+    } 
+    if(map.wed) {
+      days.push('Wed');
+      workday_count++;
+    } 
+    if(map.thu) {
+      days.push('Thu');
+      workday_count++;
+    } 
+    if(map.fri) {
+      days.push('Fri');
+      workday_count++;
+    }
+    if(map.sat) {
+      days.push('Sat');
+      weekend_count++;
+    } 
+    if(map.sun) {
+      days.push('Sun');
+      weekend_count++;
+    }
+
+    if(days.length == 0) return 'Unset';
+
+    if(workday_count == 5 && weekend_count == 2) return 'Mon-Sun';
+    if(workday_count == 5 && weekend_count == 0) return 'Mon-Fri';
+    if(weekend_count == 2 && workday_count == 0) return 'Sat-Sun';
+  
 
     return days.join(glue); 
   }
@@ -54,7 +84,8 @@ export class GeyserConfigComponent {
     private params: NavParams, 
     private geyser: Geyser,
     private picker: PickerController,
-    private modal: ModalController
+    private modal: ModalController,
+    private toast: ToastController
     ){
 
       this.type = this.params.get('type');
@@ -63,22 +94,6 @@ export class GeyserConfigComponent {
       this.schedule = this.geyser.schedule.clone();
   }
 
-
-  save(){
-    switch(this.type){
-      case 'schedule':
-        this.geyser.saveSchedule(this.schedule);
-      break; 
-      case 'config':
-      break; 
-      case 'override':
-      break;
-    }
-  }
-
-  dismiss(){
-    this.view.dismiss();
-  }
 
   addScheduleItem(){
     this.schedule.items.push(new GeyserScheduleItem);
@@ -102,6 +117,45 @@ export class GeyserConfigComponent {
     
     modal.present();
 
+  }
+
+  dismiss(){
+    this.view.dismiss();
+  }
+
+  save(){
+    switch(this.type){
+      case 'schedule':
+        this.geyser.saveSchedule(this.schedule).then(
+          res => {
+            this.toastSaveSuccess();
+            this.view.dismiss(res);
+          },
+          err => {
+            this.toastSaveFailed();
+            this.view.dismiss();            
+          }
+        );
+      break; 
+      case 'config':
+      break; 
+      case 'override':
+      break;
+    }
+  }
+
+  toastSaveSuccess(){
+    this.toast.create({
+      duration: 3000,
+      message: "Geyser Updated!"
+    }).present();
+  }
+
+  toastSaveFailed(){
+    this.toast.create({
+      duration: 3000,
+      message: "ERROR Geyser Update failed!"
+    }).present();
   }
 
 
